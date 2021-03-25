@@ -1,2 +1,0 @@
-# pandemic_lockdown_sentiment_analysis
-Course Project
