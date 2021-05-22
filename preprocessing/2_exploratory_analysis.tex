@@ -1,0 +1,529 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Exploratory Data Analysis},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Exploratory Data Analysis}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'tidyverse' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching packages --------------------------------------- tidyverse 1.3.0 --
+\end{verbatim}
+
+\begin{verbatim}
+## v ggplot2 3.3.3     v purrr   0.3.4
+## v tibble  3.1.0     v dplyr   1.0.5
+## v tidyr   1.1.3     v stringr 1.4.0
+## v readr   1.4.0     v forcats 0.5.1
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'ggplot2' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tibble' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'tidyr' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'readr' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'dplyr' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'forcats' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(ggplot2)}
+\FunctionTok{library}\NormalTok{(ggmap)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: package 'ggmap' was built under R version 4.0.4
+\end{verbatim}
+
+\begin{verbatim}
+## Google's Terms of Service: https://cloud.google.com/maps-platform/terms/.
+\end{verbatim}
+
+\begin{verbatim}
+## Please cite ggmap if you use it! See citation("ggmap") for details.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{ld1 }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{dange}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Documents}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{pandemic\_lockdown\_sentiment\_analysis}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{datasets\_csv}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{processed\_1}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{lockdown1.csv"}\NormalTok{)}
+\NormalTok{ld2 }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{dange}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Documents}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{pandemic\_lockdown\_sentiment\_analysis}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{datasets\_csv}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{processed\_1}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{lockdown2.csv"}\NormalTok{)}
+\NormalTok{ld3 }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{dange}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Documents}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{pandemic\_lockdown\_sentiment\_analysis}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{datasets\_csv}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{processed\_1}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{lockdown3.csv"}\NormalTok{)}
+\NormalTok{ld4 }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"C:}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{dange}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{Documents}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{pandemic\_lockdown\_sentiment\_analysis}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{datasets\_csv}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{processed\_1}\SpecialCharTok{\textbackslash{}\textbackslash{}}\StringTok{lockdown4.csv"}\NormalTok{)}
+
+\NormalTok{ld1[}\StringTok{\textquotesingle{}lockdown\textquotesingle{}}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"1.0"}
+\NormalTok{ld2[}\StringTok{\textquotesingle{}lockdown\textquotesingle{}}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"2.0"}
+\NormalTok{ld3[}\StringTok{\textquotesingle{}lockdown\textquotesingle{}}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"3.0"}
+\NormalTok{ld4[}\StringTok{\textquotesingle{}lockdown\textquotesingle{}}\NormalTok{] }\OtherTok{\textless{}{-}} \StringTok{"4.0"}
+
+\NormalTok{ld1 }\OtherTok{\textless{}{-}} \FunctionTok{drop\_na}\NormalTok{(ld1)}
+\NormalTok{ld2 }\OtherTok{\textless{}{-}} \FunctionTok{drop\_na}\NormalTok{(ld2)}
+\NormalTok{ld3 }\OtherTok{\textless{}{-}} \FunctionTok{drop\_na}\NormalTok{(ld3)}
+\NormalTok{ld4 }\OtherTok{\textless{}{-}} \FunctionTok{drop\_na}\NormalTok{(ld4)}
+
+\NormalTok{ld1}\SpecialCharTok{$}\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{as.POSIXct}\NormalTok{(ld1}\SpecialCharTok{$}\NormalTok{time, }\AttributeTok{format=}\StringTok{"\%a \%b \%d \%H:\%M:\%S +0000 \%Y"}\NormalTok{)}
+\NormalTok{ld2}\SpecialCharTok{$}\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{as.POSIXct}\NormalTok{(ld2}\SpecialCharTok{$}\NormalTok{time, }\AttributeTok{format=}\StringTok{"\%a \%b \%d \%H:\%M:\%S +0000 \%Y"}\NormalTok{)}
+\NormalTok{ld3}\SpecialCharTok{$}\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{as.POSIXct}\NormalTok{(ld3}\SpecialCharTok{$}\NormalTok{time, }\AttributeTok{format=}\StringTok{"\%a \%b \%d \%H:\%M:\%S +0000 \%Y"}\NormalTok{)}
+\NormalTok{ld4}\SpecialCharTok{$}\NormalTok{time }\OtherTok{\textless{}{-}} \FunctionTok{as.POSIXct}\NormalTok{(ld4}\SpecialCharTok{$}\NormalTok{time, }\AttributeTok{format=}\StringTok{"\%a \%b \%d \%H:\%M:\%S +0000 \%Y"}\NormalTok{)}
+
+\NormalTok{ld }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(ld1, ld2, ld3, ld4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{ld1, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{time, }\AttributeTok{y=}\NormalTok{sentiment\_score)) }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Lockdown 1.0"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-3-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{ld2, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{time, }\AttributeTok{y=}\NormalTok{sentiment\_score)) }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Lockdown 2.0"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-3-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{ld3, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{time, }\AttributeTok{y=}\NormalTok{sentiment\_score)) }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Lockdown 3.0"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-3-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{ld4, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{time, }\AttributeTok{y=}\NormalTok{sentiment\_score)) }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Lockdown 4.0"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-3-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{ld, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{time, }\AttributeTok{y=}\NormalTok{sentiment\_score)) }\SpecialCharTok{+} \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Lockdown 1.0{-}4.0"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-3-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{hist}\NormalTok{(ld}\SpecialCharTok{$}\NormalTok{sentiment\_score)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-4-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{analyse\_lockdown }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(data)\{}
+  
+\NormalTok{  bbox }\OtherTok{=} \FunctionTok{c}\NormalTok{(}\AttributeTok{left=}\FloatTok{68.1766451354}\NormalTok{, }\AttributeTok{bottom=}\FloatTok{7.96553477623}\NormalTok{, }\AttributeTok{right=}\FloatTok{97.4025614766}\NormalTok{, }\AttributeTok{top=}\FloatTok{35.4940095078}\NormalTok{)}
+  \FunctionTok{get\_stamenmap}\NormalTok{(}\AttributeTok{bbox =}\NormalTok{ bbox, }\AttributeTok{zoom =} \DecValTok{6}\NormalTok{, }\AttributeTok{maptype =} \StringTok{"terrain{-}lines"}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
+    \FunctionTok{ggmap}\NormalTok{() }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{data=}\NormalTok{data, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{longitude, }\AttributeTok{y=}\NormalTok{latitude, }\AttributeTok{color=}\NormalTok{sentiment\_score), }\AttributeTok{size=}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} 
+                      \FunctionTok{ggtitle}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{lockdown[}\DecValTok{0}\NormalTok{]) }\SpecialCharTok{+} 
+            \FunctionTok{scale\_colour\_gradient2}\NormalTok{( }\AttributeTok{low =} \StringTok{"red"}\NormalTok{, }\AttributeTok{mid =} \StringTok{"\#eaebea"}\NormalTok{, }\AttributeTok{high =} \StringTok{"blue"}\NormalTok{, }\AttributeTok{space =} \StringTok{"Lab"}\NormalTok{ , }\AttributeTok{guide =} \StringTok{"colourbar"}\NormalTok{, }\AttributeTok{aesthetics =} \StringTok{"colour"}\NormalTok{)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{analyse\_lockdown}\NormalTok{(ld1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/44/25.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/45/25.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/46/25.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/47/25.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/48/25.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/49/25.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/44/26.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/45/26.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/46/26.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/47/26.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/48/26.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/49/26.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/44/27.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/45/27.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/46/27.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/47/27.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/48/27.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/49/27.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/44/28.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/45/28.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/46/28.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/47/28.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/48/28.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/49/28.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/44/29.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/45/29.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/46/29.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/47/29.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/48/29.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/49/29.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/44/30.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/45/30.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/46/30.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/47/30.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/48/30.png
+\end{verbatim}
+
+\begin{verbatim}
+## Source : http://tile.stamen.com/terrain-lines/6/49/30.png
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: Removed 44 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{analyse\_lockdown}\NormalTok{(ld2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 24 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-6-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{analyse\_lockdown}\NormalTok{(ld3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 23 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-6-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{analyse\_lockdown}\NormalTok{(ld4)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 38 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-6-4.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{analyse\_lockdown}\NormalTok{(ld)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Removed 129 rows containing missing values (geom_point).
+\end{verbatim}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-6-5.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sentiment\_analysis }\OtherTok{\textless{}{-}} \FunctionTok{as.data.frame}\NormalTok{(}\FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}
+  \FunctionTok{c}\NormalTok{(}\AttributeTok{lockdown=}\StringTok{"1.0"}\NormalTok{, }\AttributeTok{negative=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textless{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{neutral=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{==}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{positive=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld1}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{)),}
+  
+  \FunctionTok{c}\NormalTok{(}\AttributeTok{lockdown=}\StringTok{"2.0"}\NormalTok{, }\AttributeTok{negative=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textless{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{neutral=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{==}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{positive=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld2}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{)),}
+  
+  \FunctionTok{c}\NormalTok{(}\AttributeTok{lockdown=}\StringTok{"3.0"}\NormalTok{, }\AttributeTok{negative=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textless{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{neutral=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{==}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{positive=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld3}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{)),}
+  
+  \FunctionTok{c}\NormalTok{(}\AttributeTok{lockdown=}\StringTok{"4.0"}\NormalTok{, }\AttributeTok{negative=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textless{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{neutral=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{==}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{),}
+                    \AttributeTok{positive=}\FunctionTok{round}\NormalTok{(}\DecValTok{100}\SpecialCharTok{*}\NormalTok{(}\FunctionTok{length}\NormalTok{(ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score[ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score}\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{])}\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(ld4}\SpecialCharTok{$}\NormalTok{sentiment\_score)), }\AttributeTok{digits=}\DecValTok{2}\NormalTok{))}
+\NormalTok{), }\AttributeTok{byrow =} \ConstantTok{TRUE}\NormalTok{, }\AttributeTok{ncol =} \DecValTok{4}\NormalTok{, }\AttributeTok{nrow=}\DecValTok{4}\NormalTok{, }\AttributeTok{dimnames=}\FunctionTok{c}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{3}\NormalTok{,}\DecValTok{4}\NormalTok{), }\FunctionTok{c}\NormalTok{(}\StringTok{"lockdown"}\NormalTok{, }\StringTok{"negative"}\NormalTok{, }\StringTok{"neutral"}\NormalTok{, }\StringTok{"positive"}\NormalTok{)))))}
+
+\NormalTok{sentiment\_analysis}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   lockdown negative neutral positive
+## 1      1.0    21.43   32.76    45.81
+## 2      2.0    20.75   30.89    48.37
+## 3      3.0    18.62   32.75    48.63
+## 4      4.0    19.63   30.92    49.45
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{ld, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{latitude, }\AttributeTok{y=}\NormalTok{sentiment\_score)) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} 
+                    \FunctionTok{ggtitle}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Sentiment Score V/S Latitude}\SpecialCharTok{\textbackslash{}n}\StringTok{pearson\textquotesingle{}s r = "}\NormalTok{, }\FunctionTok{cor}\NormalTok{(ld}\SpecialCharTok{$}\NormalTok{latitude, ld}\SpecialCharTok{$}\NormalTok{sentiment\_score, }\AttributeTok{method=}\StringTok{"pearson"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{ld, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{longitude, }\AttributeTok{y=}\NormalTok{sentiment\_score)) }\SpecialCharTok{+} \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+} 
+                    \FunctionTok{ggtitle}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Sentiment Score V/S Longitude}\SpecialCharTok{\textbackslash{}n}\StringTok{pearson\textquotesingle{}s r = "}\NormalTok{, }\FunctionTok{cor}\NormalTok{(ld}\SpecialCharTok{$}\NormalTok{longitude, ld}\SpecialCharTok{$}\NormalTok{sentiment\_score, }\AttributeTok{method=}\StringTok{"pearson"}\NormalTok{)))}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{2_exploratory_analysis_files/figure-latex/unnamed-chunk-8-2.pdf}
+
+\end{document}

@@ -1,22 +1,27 @@
 ---
 title: "Exploratory Data Analysis"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(ggmap)
+library(dplyr)
+```
 
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
 
 ```{r}
 
-library(tidyverse)
 
-ld1 <- read.csv("C:\\Users\\dange\\Documents\\ml_mini_project\\datasets_csv\\processed_1\\lockdown1.csv")
-ld2 <- read.csv("C:\\Users\\dange\\Documents\\ml_mini_project\\datasets_csv\\processed_1\\lockdown2.csv")
-ld3 <- read.csv("C:\\Users\\dange\\Documents\\ml_mini_project\\datasets_csv\\processed_1\\lockdown3.csv")
-ld4 <- read.csv("C:\\Users\\dange\\Documents\\ml_mini_project\\datasets_csv\\processed_1\\lockdown4.csv")
+
+ld1 <- read.csv("C:\\Users\\dange\\Documents\\pandemic_lockdown_sentiment_analysis\\datasets_csv\\processed_1\\lockdown1.csv")
+ld2 <- read.csv("C:\\Users\\dange\\Documents\\pandemic_lockdown_sentiment_analysis\\datasets_csv\\processed_1\\lockdown2.csv")
+ld3 <- read.csv("C:\\Users\\dange\\Documents\\pandemic_lockdown_sentiment_analysis\\datasets_csv\\processed_1\\lockdown3.csv")
+ld4 <- read.csv("C:\\Users\\dange\\Documents\\pandemic_lockdown_sentiment_analysis\\datasets_csv\\processed_1\\lockdown4.csv")
 
 ld1['lockdown'] <- "1.0"
 ld2['lockdown'] <- "2.0"
@@ -33,38 +38,76 @@ ld2$time <- as.POSIXct(ld2$time, format="%a %b %d %H:%M:%S +0000 %Y")
 ld3$time <- as.POSIXct(ld3$time, format="%a %b %d %H:%M:%S +0000 %Y")
 ld4$time <- as.POSIXct(ld4$time, format="%a %b %d %H:%M:%S +0000 %Y")
 
-```
-
-
-```{r}
-library(ggplot2)
-
-data1 <- as.data.frame(cbind(time = ld1$time, sentiment_score = ld1$sentiment_score))
-ggplot(data=data1, aes(x=time, y=sentiment_score)) + geom_line()
-
-data2 <- as.data.frame(cbind(time = ld2$time, sentiment_score = ld2$sentiment_score))
-ggplot(data=data2, aes(x=time, y=sentiment_score)) + geom_line()
-
-data3 <- as.data.frame(cbind(time = ld3$time, sentiment_score = ld3$sentiment_score))
-ggplot(data=data3, aes(x=time, y=sentiment_score)) + geom_line()
-
-data4 <- as.data.frame(cbind(time = ld4$time, sentiment_score = ld4$sentiment_score))
-```
-
-
-```{r}
-
+ld <- rbind(ld1, ld2, ld3, ld4)
 
 ```
 
 
 ```{r}
 
+ggplot(data=ld1, aes(x=time, y=sentiment_score)) + geom_line() + ggtitle("Lockdown 1.0")
+
+ggplot(data=ld2, aes(x=time, y=sentiment_score)) + geom_line() + ggtitle("Lockdown 2.0")
+
+ggplot(data=ld3, aes(x=time, y=sentiment_score)) + geom_line() + ggtitle("Lockdown 3.0")
+
+ggplot(data=ld4, aes(x=time, y=sentiment_score)) + geom_line() + ggtitle("Lockdown 4.0")
+
+ggplot(data=ld, aes(x=time, y=sentiment_score)) + geom_line() + ggtitle("Lockdown 1.0-4.0")
+
+```
+```{r}
+hist(ld$sentiment_score)
+```
+
+
+```{r}
+analyse_lockdown <- function(data){
+  
+  bbox = c(left=68.1766451354, bottom=7.96553477623, right=97.4025614766, top=35.4940095078)
+  get_stamenmap(bbox = bbox, zoom = 6, maptype = "terrain-lines") %>%
+    ggmap() + geom_point(data=data, aes(x=longitude, y=latitude, color=sentiment_score), size=1) + 
+                      ggtitle(data$lockdown[0]) + 
+            scale_colour_gradient2( low = "red", mid = "#eaebea", high = "blue", space = "Lab" , guide = "colourbar", aesthetics = "colour")
+}
+
 
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+```{r}
+analyse_lockdown(ld1)
+analyse_lockdown(ld2)
+analyse_lockdown(ld3)
+analyse_lockdown(ld4)
+analyse_lockdown(ld)
+```
+```{r}
+sentiment_analysis <- as.data.frame(matrix(c(
+  c(lockdown="1.0", negative=round(100*(length(ld1$sentiment_score[ld1$sentiment_score<0])/length(ld1$sentiment_score)), digits=2),
+                    neutral=round(100*(length(ld1$sentiment_score[ld1$sentiment_score==0])/length(ld1$sentiment_score)), digits=2),
+                    positive=round(100*(length(ld1$sentiment_score[ld1$sentiment_score>0])/length(ld1$sentiment_score)), digits=2)),
+  
+  c(lockdown="2.0", negative=round(100*(length(ld2$sentiment_score[ld2$sentiment_score<0])/length(ld2$sentiment_score)), digits=2),
+                    neutral=round(100*(length(ld2$sentiment_score[ld2$sentiment_score==0])/length(ld2$sentiment_score)), digits=2),
+                    positive=round(100*(length(ld2$sentiment_score[ld2$sentiment_score>0])/length(ld2$sentiment_score)), digits=2)),
+  
+  c(lockdown="3.0", negative=round(100*(length(ld3$sentiment_score[ld3$sentiment_score<0])/length(ld3$sentiment_score)), digits=2),
+                    neutral=round(100*(length(ld3$sentiment_score[ld3$sentiment_score==0])/length(ld3$sentiment_score)), digits=2),
+                    positive=round(100*(length(ld3$sentiment_score[ld3$sentiment_score>0])/length(ld3$sentiment_score)), digits=2)),
+  
+  c(lockdown="4.0", negative=round(100*(length(ld4$sentiment_score[ld4$sentiment_score<0])/length(ld4$sentiment_score)), digits=2),
+                    neutral=round(100*(length(ld4$sentiment_score[ld4$sentiment_score==0])/length(ld4$sentiment_score)), digits=2),
+                    positive=round(100*(length(ld4$sentiment_score[ld4$sentiment_score>0])/length(ld4$sentiment_score)), digits=2))
+), byrow = TRUE, ncol = 4, nrow=4, dimnames=c(list(c(1,2,3,4), c("lockdown", "negative", "neutral", "positive")))))
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+sentiment_analysis
+```
+```{r}
+ggplot(data=ld, aes(x=latitude, y=sentiment_score)) + geom_point() + 
+                    ggtitle(paste("Sentiment Score V/S Latitude\npearson's r = ", cor(ld$latitude, ld$sentiment_score, method="pearson")))
+
+ggplot(data=ld, aes(x=longitude, y=sentiment_score)) + geom_point() + 
+                    ggtitle(paste("Sentiment Score V/S Longitude\npearson's r = ", cor(ld$longitude, ld$sentiment_score, method="pearson")))
+```
+
